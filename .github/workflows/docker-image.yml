@@ -22,14 +22,18 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+    - name: Generate image tag
+      id: imagetag
+      run: echo "IMAGE_TAG=safupy/cexbackend:$(date +%s)" >> $GITHUB_ENV
+
     - name: Build the Docker image
       run: |
-        docker build . --file Dockerfile --tag safupy/cexbackend:$(date +%s)
-        
+        docker build . --file Dockerfile --tag ${{ env.IMAGE_TAG }}
+
     - name: Push the Docker image
       run: |
-        docker push safupy/cexbackend:$(date +%s)
-
+        docker push ${{ env.IMAGE_TAG }}
 
     - name: Clean up post-build
-      run: docker rmi cexbacked:dev cexbackend:${{ github.sha }}
+      run: |
+        docker rmi ${{ env.IMAGE_TAG }}
