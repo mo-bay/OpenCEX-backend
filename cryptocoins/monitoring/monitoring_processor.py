@@ -1,10 +1,10 @@
 import logging
-
 from cryptocoins.monitoring.monitors.bep20_monitor import UsdtBnbMonitor
 from cryptocoins.monitoring.monitors.bnb_monitor import BnbMonitor
 from cryptocoins.monitoring.monitors.btc_monitor import BtcMonitor
 from cryptocoins.monitoring.monitors.erc20_monitor import UsdtEthMonitor
 from cryptocoins.monitoring.monitors.eth_monitor import EthMonitor
+from cryptocoins.monitoring.monitors.rupx_monitor import RupxMonitor
 from cryptocoins.monitoring.monitors.trc20_monitor import UsdtTrxMonitor
 from cryptocoins.monitoring.monitors.trx_monitor import TrxMonitor
 
@@ -18,8 +18,8 @@ MONITORS = {
     'USDTTRX': UsdtTrxMonitor,
     'USDTETH': UsdtEthMonitor,
     'USDTBNB': UsdtBnbMonitor,
+    'RUPX': RupxMonitor,
 }
-
 
 class MonitoringProcessor:
     monitors: dict = MONITORS
@@ -29,7 +29,6 @@ class MonitoringProcessor:
         Monitor = MONITORS.get(currency)
         if not Monitor:
             raise Exception(f'Monitor not found for {currency}')
-
         monitor = Monitor()
         log.info(f'Monitoring: processing {monitor.CURRENCY} {monitor.BLOCKCHAIN_CURRENCY}')
         monitor.mark_wallet_transactions()
